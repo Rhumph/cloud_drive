@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home-Page</title>
+</head>
+<body>
+    <h1>User Home Page</h1>
+    <div>
+        Folder Management
+        <form action="/home/create-folder" method="post">
+            <input type="text" name="dirName" placeholder="Folder Name">
+            <button type="submit">Create Folder</button>
+        </form>
+        <form action="/update-folder" method="post">
+            <button type="submit">Update Folder</button>
+        </form>
+        <form action="/delete-folder" method="post">
+            <button type="submit">Delete Folder</button>
+        </form>
+    </div>
+    <div>
+        File Management
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <button type="submit">Upload File</button>
+        </form>
+        <form action="/update" method="post">
+            <button type="submit">Update File</button>
+        </form>
+        <form action="/delete" method="post">
+            <button type="submit">Delete File</button>
+        </form>
+    </div>
+    <div>
+        <% if (files && files.length > 0) { %>
+            <% files.forEach(file => { %>
+                <div>
+                    <p><%= file.name %></p>
+                    <p><%= file.size %></p>
+                    <p><%= file.type %></p>
+                    <p><%= file.path %></p>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No files found.</p>
+        <% } %>
+    </div>
+</body>
+</html>
