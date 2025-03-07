@@ -1,6 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const brcypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const prisma = require('../utils/prisma_client');
 
   passport.use(new LocalStrategy({
@@ -12,7 +12,7 @@ const prisma = require('../utils/prisma_client');
       if (!user) {
         return done(null, false, { message: 'Incorrect email.' });
       }
-      const isMatch = await brcypt.compare(password, user.password);
+      const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return done(null, false, { message: 'Incorrect password.' });
       }
@@ -31,6 +31,7 @@ const prisma = require('../utils/prisma_client');
       const user = await prisma.user.findUnique({ where: { id } });
       done(null, user);
     } catch (err) {
+      console.error('Error during deserialization:', err);
       done(err);
     }
   });

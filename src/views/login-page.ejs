@@ -3,17 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <!-- Add this to the <head> section of your HTML files -->
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
     <title>Cloud Drive Login</title>
 </head>
-<body>
-    <h1>Cloud Drive Login</h1>
-    <form action="/login" method="POST">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-        <button type="submit">Login</button>
-    </form>
-    <button onclick="location.href='/create-user'">Create Account</button>
+<body id="login-body">
+    <div id="login-container">
+        <h1>Cloud Drive Login</h1>
+        <form action="/login" method="POST">
+            <!-- <label for="email" type="hidden">Email:</label> -->
+            <input type="email" name="email" id="email" placeholder="Email" required>
+            <!-- <label for="password" type="hidden">Password:</label> -->
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <button onclick="location.href='/create-user'">Create Account</button>
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            document.getElementById('login-container').classList.add('loaded');
+        });
+    </script>
 </body>
 </html>

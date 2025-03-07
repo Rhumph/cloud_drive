@@ -3,48 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Home-Page</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Home-Page</title>
 </head>
 <body>
-    <h1>User Home Page</h1>
-    <div>
-        Folder Management
-        <form action="/home/create-folder" method="post">
-            <input type="text" name="dirName" placeholder="Folder Name">
-            <button type="submit">Create Folder</button>
-        </form>
-        <form action="/update-folder" method="post">
-            <button type="submit">Update Folder</button>
-        </form>
-        <form action="/delete-folder" method="post">
-            <button type="submit">Delete Folder</button>
-        </form>
-    </div>
-    <div>
-        File Management
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <button type="submit">Upload File</button>
-        </form>
-        <form action="/update" method="post">
-            <button type="submit">Update File</button>
-        </form>
-        <form action="/delete" method="post">
-            <button type="submit">Delete File</button>
-        </form>
-    </div>
-    <div>
-        <% if (files && files.length > 0) { %>
-            <% files.forEach(file => { %>
-                <div>
-                    <p><%= file.name %></p>
-                    <p><%= file.size %></p>
-                    <p><%= file.type %></p>
-                    <p><%= file.path %></p>
-                </div>
-            <% }) %>
-        <% } else { %>
-            <p>No files found.</p>
-        <% } %>
+    <div class="container">
+        <h1>User Home Page</h1>
+        <div class="management-options">
+            <div class="folder-options">
+                <form action="/home/create-folder" method="post">
+                    <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
+                    <button type="submit" class="folder-option"><i class="fas fa-folder-plus"></i></button>
+                </form>
+            </div>
+            <div class="file-options">
+                <form action="/home/upload-file" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
+                    <button type="submit" class="file-option"><i class="fas fa-file-upload"></i></button>
+                </form>
+            </div>
+        </div>
+        <div id="items-container">
+            <% if (items && items.length > 0) { %>
+                <% items.forEach(item => { %>
+                    <div class="item">
+                        <form action="/home/update-<%= item.type %>/<%= item.id %>" method="post" class="update-form">
+                            <input type="hidden" name="id" value="<%= item.id %>">
+                            <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
+                            <input type="text" name="name" value="<%= item.name %>" class="item-name">
+                            <p class="item-detail">Size: <%= item.size %></p>
+                            <p class="item-detail">Type: <%= item.type %></p>
+                            <button type="submit" class="update-button">Update Name</button>
+                        </form>
+                        <% if (item.type === 'directory') { %>
+                            <form action="/home/delete-folder/<%= item.id %>" method="post" class="delete-form">
+                                <input type="hidden" name="id" value="<%= item.id %>">
+                                <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
+                                <button type="submit" class="delete-button">Delete Folder</button>
+                            </form>
+                        <% } else if (item.type === 'file') { %>
+                            <form action="/home/delete-file/<%= item.id %>" method="post" class="delete-form">
+                                <input type="hidden" name="id" value="<%= item.id %>">
+                                <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
+                                <button type="submit" class="delete-button">Delete File</button>
+                            </form>
+                        <% } %>
+                        <% if (item.type === 'directory') { %>
+                            <form action="/home/select-directory" method="post" class="view-form">
+                                <input type="hidden" name="selectedDirectoryPath" value="<%= item.path %>">
+                                <input type="hidden" name="selectedDirectoryid" value="<%= item.id %>">
+                                <button type="submit" class="view-button">View Directory</button>
+                            </form>
+                        <% } %>
+                        <% if (item.type === 'file') { %>
+                        <form action="/home/download-file/<%= item.id %>" method="get" class="view-form">
+                            <input type="hidden" name="id" value="<%= item.id %>">
+                            <input type="hidden" name="path" value="<%= item.path %>">
+                            <button type="submit" class="view-button">Download</button>
+                        </form>
+                        <% } %>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p class="no-items">No items found.</p>
+            <% } %>
+        </div>
     </div>
 </body>
 </html>

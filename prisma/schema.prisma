@@ -20,6 +20,7 @@ model User {
   name     String?
   password String
   files    File[]
+  directories Directory[]
 }
 
 model File {
@@ -31,5 +32,15 @@ model File {
   path      String
   size      Int
   userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Directory {
+  id        Int      @id @default(autoincrement())
+  name      String
+  userId    Int
+  type      String
+  path      String
+  size      Int
   user      User     @relation(fields: [userId], references: [id])
 }
