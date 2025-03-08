@@ -49,12 +49,12 @@ async function getCreateUserPage(req, res) {
 
 async function handleCreateUser(req, res) {
     try {
-        const { email, unhashedpassword, username, name } = req.body;
-        const password = await bcrypt.hash(unhashedpassword, 10);
+        const { email, password, username, name } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
         const user = await prisma.user.create({
             data: {
                 email,
-                password,
+                password: hashedPassword,
                 username,
                 name
             }

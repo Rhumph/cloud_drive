@@ -16,7 +16,7 @@ router.post('/delete-folder/:id', fileController.deleteDirectory);
 router.get('/update-folder/:id', fileController.getUpdateForm);
 router.post('/update-folder/:id', fileController.updateDirectory);
 
-router.post('/upload-file', express.urlencoded({ extended: true }), upload.single('file'), (req, res, next) => {
+router.post('/upload-file', express.urlencoded({ extended: true }), upload.single('fileUpload'), (req, res, next) => {
     console.log('Upload file request:', { 
         file: req.file,
         body: req.body

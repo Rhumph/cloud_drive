@@ -11,6 +11,7 @@ async function makeDirectory(req, res) {
         const userId = req.user.id;
         const dirName = req.body.dirName;
         const targetDirectoryPath = req.body.targetDirectoryPath || ''; // Get the target directory path from the request body, default to root if not provided
+        console.log('Make directory targetDirectoryPath:', targetDirectoryPath);
         const userRootPath = path.join(__dirname, '../../user_files', userId.toString());
         const userFolderPath = path.join(targetDirectoryPath, dirName);
 
@@ -23,7 +24,7 @@ async function makeDirectory(req, res) {
             const newDir = await prisma.directory.create({
                 data: {
                     name: dirName,
-                    userId: userId,
+                    userId: userId, 
                     type: 'folder',
                     path: userFolderPath,
                     size: 0

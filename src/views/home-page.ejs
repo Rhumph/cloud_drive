@@ -15,12 +15,16 @@
             <div class="folder-options">
                 <form action="/home/create-folder" method="post">
                     <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
+                    <label for="folderName">Folder Name:</label>
+                    <input type="text" id="folderName" name="dirName" placeholder="Enter folder name">
                     <button type="submit" class="folder-option"><i class="fas fa-folder-plus"></i></button>
                 </form>
             </div>
             <div class="file-options">
                 <form action="/home/upload-file" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
+                    <label for="fileUpload">Choose File:</label>
+                    <input type="file" id="fileUpload" name="fileUpload">
                     <button type="submit" class="file-option"><i class="fas fa-file-upload"></i></button>
                 </form>
             </div>
@@ -29,41 +33,50 @@
             <% if (items && items.length > 0) { %>
                 <% items.forEach(item => { %>
                     <div class="item">
+                        <div class="item-icon">
+                            <% if (item.type === 'directory') { %>
+                                <i class="fas fa-folder fa-3x"></i>
+                            <% } else if (item.type === 'file') { %>
+                                <i class="fas fa-file fa-3x"></i>
+                            <% } %>
+                        </div>
                         <form action="/home/update-<%= item.type %>/<%= item.id %>" method="post" class="update-form">
                             <input type="hidden" name="id" value="<%= item.id %>">
                             <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
                             <input type="text" name="name" value="<%= item.name %>" class="item-name">
-                            <p class="item-detail">Size: <%= item.size %></p>
-                            <p class="item-detail">Type: <%= item.type %></p>
-                            <button type="submit" class="update-button">Update Name</button>
+                            <!-- <p class="item-detail">Size: <%= item.size %></p>
+                            <p class="item-detail">Type: <%= item.type %></p> -->
                         </form>
-                        <% if (item.type === 'directory') { %>
-                            <form action="/home/delete-folder/<%= item.id %>" method="post" class="delete-form">
+                        <div class="item-buttons">
+                            <form action="/home/update-<%= item.type %>/<%= item.id %>" method="post">
                                 <input type="hidden" name="id" value="<%= item.id %>">
                                 <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
-                                <button type="submit" class="delete-button">Delete Folder</button>
+                                <button type="submit" class="icon-button"><i class="fas fa-edit"></i></button>
                             </form>
-                        <% } else if (item.type === 'file') { %>
-                            <form action="/home/delete-file/<%= item.id %>" method="post" class="delete-form">
-                                <input type="hidden" name="id" value="<%= item.id %>">
-                                <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
-                                <button type="submit" class="delete-button">Delete File</button>
-                            </form>
-                        <% } %>
-                        <% if (item.type === 'directory') { %>
-                            <form action="/home/select-directory" method="post" class="view-form">
-                                <input type="hidden" name="selectedDirectoryPath" value="<%= item.path %>">
-                                <input type="hidden" name="selectedDirectoryid" value="<%= item.id %>">
-                                <button type="submit" class="view-button">View Directory</button>
-                            </form>
-                        <% } %>
-                        <% if (item.type === 'file') { %>
-                        <form action="/home/download-file/<%= item.id %>" method="get" class="view-form">
-                            <input type="hidden" name="id" value="<%= item.id %>">
-                            <input type="hidden" name="path" value="<%= item.path %>">
-                            <button type="submit" class="view-button">Download</button>
-                        </form>
-                        <% } %>
+                            <% if (item.type === 'directory') { %>
+                                <form action="/home/delete-folder/<%= item.id %>" method="post">
+                                    <input type="hidden" name="id" value="<%= item.id %>">
+                                    <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
+                                    <button type="submit" class="icon-delete-button"><i class="fas fa-trash-alt"></i></button>
+                                </form>
+                                <form action="/home/select-directory" method="post">
+                                    <input type="hidden" name="selectedDirectoryPath" value="<%= item.path %>">
+                                    <input type="hidden" name="selectedDirectoryid" value="<%= item.id %>">
+                                    <button type="submit" class="icon-button"><i class="fas fa-folder-open"></i></button>
+                                </form>
+                            <% } else if (item.type === 'file') { %>
+                                <form action="/home/delete-file/<%= item.id %>" method="post">
+                                    <input type="hidden" name="id" value="<%= item.id %>">
+                                    <input type="hidden" name="targetDirectoryPath" value="<%= currentDirectoryPath %>">
+                                    <button type="submit" class="icon-delete-button"><i class="fas fa-trash-alt"></i></button>
+                                </form>
+                                <form action="/home/download-file/<%= item.id %>" method="get">
+                                    <input type="hidden" name="id" value="<%= item.id %>">
+                                    <input type="hidden" name="path" value="<%= item.path %>">
+                                    <button type="submit" class="icon-button"><i class="fas fa-download"></i></button>
+                                </form>
+                            <% } %>
+                        </div>
                     </div>
                 <% }) %>
             <% } else { %>

@@ -8,7 +8,7 @@ body {
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center; /* Center the container vertically */
     overflow: hidden;
 }
 
@@ -32,7 +32,7 @@ h1 {
 }
 
 .folder-options, .file-options {
-    background-color: #333;
+    background-color: transparent;
     border: 1px solid #444;
     border-radius: 5px;
     width: 60px;
@@ -46,6 +46,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .folder-options:hover, .file-options:hover,
@@ -54,10 +55,29 @@ h1 {
     color: #fff;
     border-color: #4b0082;
     opacity: 1;
+    width: 300px;
+    height: auto;
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .folder-options i, .file-options i {
     font-size: 24px;
+}
+
+.folder-options label, .file-options label,
+.folder-options input, .file-options input {
+    display: none;
+}
+
+.folder-options:hover label, .file-options:hover label,
+.folder-options:hover input, .file-options:hover input,
+.folder-options:focus-within label, .file-options:focus-within label,
+.folder-options:focus-within input, .file-options:focus-within input {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
 }
 
 button {
@@ -118,11 +138,26 @@ div p {
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
-    width: calc(33.333% - 20px);
+    width: 200px;
+    height: 250px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.item-icon {
+    margin-bottom: 10px;
+}
+
+.item-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
 }
 
 .item-name, .item-detail {
@@ -130,16 +165,30 @@ div p {
     color: #000;
 }
 
-.delete-form {
-    display: inline-block;
-    margin-right: 10px;
+.icon-button, .icon-delete-button {
+    background-color: #6a0dad;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
 }
 
-.delete-button {
+.icon-button:hover {
+    background-color: #4b0082;
+}
+
+.icon-delete-button {
     background-color: #dc3545;
 }
 
-.delete-button:hover {
+.icon-delete-button:hover {
     background-color: #c82333;
 }
 
